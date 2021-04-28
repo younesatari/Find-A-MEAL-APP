@@ -6,7 +6,7 @@ const modaleContainer = document.querySelector('.modale-container');
 const modale = document.querySelector('.modale');
 const closeModale = document.querySelector('.fa-times');
 
-/* Event Listener */
+/* Event Listeners */
 searchForm.addEventListener('submit', e => getMeals(e));
 meals.addEventListener('click', e => getRecipe(e));
 modale.addEventListener('click', e => closeModal(e));
@@ -52,16 +52,13 @@ function getRecipe(e) {
       let mealRecipe = e.target.parentElement.parentElement.nextElementSibling.childNodes[1].innerHTML;
       let mealTutorial = e.target.parentElement.parentElement.nextElementSibling.childNodes[3].innerHTML;
       
-
       modaleContainer.classList.add('show-modale-container');
       modale.classList.add('show-modale');
 
       document.querySelector('.meal-name').innerHTML = mealName;
       document.querySelector('.Instructions').innerHTML = mealRecipe;
    }
-
 }
-
 /* Close Modale */
 function closeModal(e) {
    if(e.target.classList.contains('fa-times')) {
