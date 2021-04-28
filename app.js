@@ -27,7 +27,7 @@ async function getMeals(e) {
    mealInfos.forEach(meal => {
 
       output += `<!-- Single Meal -->
-      <div class="col-md-4 mb-4">
+      <div class="col-md-4 mb-4" data-id = "${meal.idMeal}">
          <div class="card">
             <img class="card-img-top" src="${meal.strMealThumb}">
             <div class="card-body text-center">
@@ -47,18 +47,30 @@ async function getMeals(e) {
 /* Get Recipe */
 function getRecipe(e) {
    if(e.target.classList.contains('recipe-btn')) {
-      let mealName = e.target.previousElementSibling.innerHTML;
-      let mealImg = e.target.parentElement.previousElementSibling.src;
-      let mealRecipe = e.target.parentElement.parentElement.nextElementSibling.childNodes[1].innerHTML;
-      let mealTutorial = e.target.parentElement.parentElement.nextElementSibling.childNodes[3].innerHTML;
-      
       modaleContainer.classList.add('show-modale-container');
+      // Show Modale
       modale.classList.add('show-modale');
+      // Get Meal ID
+      let mealId = e.target.parentElement.parentElement.parentElement.dataset.id;
+      // Fetch the meal 
+      fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
+         .then(res => res.json())
+         .then(data => {
+            let modalMealInfo = data.meals;
+            let output = `
+               <i class="fas fa-times fa-2x"></i>
+               <h1 class="meal-name text-center mb-4">${modalMealInfo[0].strMeal}</h1>
+               <div class="meal-recipe mb-5">    
+                  <h5>Instruction:</h5>
+                  <span class="Instructions lead">${modalMealInfo[0].strInstructions}</span>  
+               </div>
+               <a class="text-white watch-btn py-3" href="${modalMealInfo[0].strYoutube}" target = "_blank" id="watch-btn">Watch Tutorial <i class="fab fa-youtube"></i></a> `
 
-      document.querySelector('.meal-name').innerHTML = mealName;
-      document.querySelector('.Instructions').innerHTML = mealRecipe;
-   }
+            modale.innerHTML = output;
+         });
 }
+}
+
 /* Close Modale */
 function closeModal(e) {
    if(e.target.classList.contains('fa-times')) {
